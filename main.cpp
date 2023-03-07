@@ -32,8 +32,8 @@ public:
         std::cout << std::endl;
     }
 
-    // Copy constructor.
-    A(A &other) : mLength(other.mLength), mData(new int[other.mLength]) {
+    // Copy constructor. const
+    A(A& other) : mLength(other.mLength), mData(new int[other.mLength]) {
         std::cout << "A(const A&). length = " << other.mLength << ". Copying resource." << std::endl;
         std::copy(other.mData, other.mData + mLength, mData);
     }
@@ -97,12 +97,30 @@ public:
 
 int main() {
     // Create a vector object and add a few elements to it.
-    std::vector<A> v;
-    v.push_back(A(25));
-    v.push_back(A(75));
+//    std::vector<A> v;
+//    v.push_back(A(25)); // A(size_t). length = 25. that takes rvalue reference && 25
+//    v.push_back(A(75)); // A(size_t). length = 75. that takes rvalue reference && 75
+//
+//    // Insert a new element into the second position of the vector.
+//    // add a new element to the vector between the first and second existing elements.
+//    v.insert(v.begin() + 1, A(50));
 
-    // Insert a new element into the second position of the vector.
-    // add a new element to the vector between the first and second existing elements.
-    v.insert(v.begin() + 1, A(50));
+    // Declare a new vector object and an A object with length 25.
+    /*aObj is an lvalue because it is a named variable with a storage location.
+
+In the statement A aObj(25), a new A object is created with a length of 25 using the constructor that takes a size_t parameter. The constructor
+     initializes the mLength member variable with the given length and allocates a
+     new integer array of that length using the new operator. The constructor then initializes the integer array with default values of 0.
+
+                             Since aObj is a named variable, it has a storage location in memory, and we can refer to it by its identifier.
+                             We can take its address using the address-of operator &, and we can pass it as an
+                             argument to functions or assign it to other variables. All of these operations are characteristic of lvalues.*/
+    std::vector<A> v2;
+    A aObj(25); // lvalue ?
+
+    // Push the A object into the vector, which invokes the copy constructor to create a copy of the A object.
+//    v2.push_back(static_cast<A&&>(aObj)); // A(const A&). length = 25. Copying resource.
+    v2.push_back(std::move(aObj));
+
     return 0;
 }
