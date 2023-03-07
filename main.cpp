@@ -1,11 +1,15 @@
-#include <algorithm>
-#include <iostream>
+// Description: This program demonstrates the use of the move constructor and move assignment operator.
 //The class also has a copy constructor and a copy assignment operator,
 // which allow instances of the class to be copied. They create a new array of
 // integers of the same size as the source object's array, and then copy the
 // data from the source object's array to the new array. The move constructor
 // and move assignment operator are also implemented to provide efficient transfer
 // of resources between objects.
+
+#include <algorithm>
+#include <iostream>
+#include <vector>
+
 class A {
 private:
     size_t mLength;// The length of the resource.
@@ -90,7 +94,6 @@ public:
     }
 };
 
-#include <vector>
 
 int main() {
     // Create a vector object and add a few elements to it.
@@ -99,6 +102,7 @@ int main() {
     v.push_back(A(75));
 
     // Insert a new element into the second position of the vector.
+    // add a new element to the vector between the first and second existing elements.
     v.insert(v.begin() + 1, A(50));
     return 0;
 }
